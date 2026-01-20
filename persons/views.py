@@ -57,7 +57,7 @@ def delete_person(request, person_id):
 @api_view(['GET'])
 def get_person_withid(request, person_id):
     try:
-        person = Person.objects.get(id=Pprson_id)
+        person = Person.objects.get(id=person_id)
         serializer = person_serializer(person,partial=True)
         return Response(serializer.data)
     except Person.DoesNotExist:  # corrected 'execpt' to 'except'
