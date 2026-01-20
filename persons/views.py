@@ -3,8 +3,10 @@ from django.shortcuts import render
 # Create your views here.
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from ..models.persons import Person
-from ..serializers.person_serializers import PersonSerializer
+
+from persons.models import Person
+from persons.serializers.person_serializers import PersonSerializer
+
 
 @api_view(['GET'])
 def get_person_data(request):
