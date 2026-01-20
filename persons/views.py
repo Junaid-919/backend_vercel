@@ -4,6 +4,10 @@ from persons.models import Person
 from persons.serializers import PersonSerializer
 
 
+@api_view(["GET"])
+def health(request):
+    return Response({"status": "ok"})
+
 @api_view(['GET'])
 def get_person_data(request):
     persons = Person.objects.all()
