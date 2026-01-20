@@ -6,3 +6,6 @@ class Person(models.Model):
     phone = models.TextField()
     bloodgroup = models.TextField()
     address = models.TextField()
+
+    def __str__(self):
+        return self.name
