@@ -1,7 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from persons.models import Person
-from persons.serializers.person_serializers import PersonSerializer
+from persons.serializers import PersonSerializer
+
 
 @api_view(['GET'])
 def get_person_data(request):
