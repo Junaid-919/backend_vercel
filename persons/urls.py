@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from . import views  # import the module itself
 
 urlpatterns = [
     path("get_person_data/", views.get_person_data, name="get_person_data"),
