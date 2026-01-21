@@ -33,7 +33,7 @@ ALLOWED_HOSTS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://backend-vercel-1cqc7cnq8-shaik-junaids-projects-35758ac6.vercel.app",
+    "https://vercel-wpf2.vercel.app",
 ]
 
 
@@ -145,7 +145,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",  # React development server
-    "https://backend-vercel-1cqc7cnq8-shaik-junaids-projects-35758ac6.vercel.app",
+    "https://vercel-wpf2.vercel.app",
 ]
 
 REST_FRAMEWORK = {
