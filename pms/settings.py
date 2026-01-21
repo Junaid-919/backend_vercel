@@ -87,13 +87,15 @@ WSGI_APPLICATION = "pms.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
+        "HOST": "aws-0-ap-south-1.pooler.supabase.com",
+        "PORT": "6543",
         "NAME": "postgres",
-        "USER": "postgres",
+        "USER": "postgres.xktwpsjrtrwretnufqfg",
         "PASSWORD": "vLTMeHiAjX7LsPsF",
-        "HOST": "db.xktwpsjrtrwretnufqfg.supabase.co",
-        "PORT": "5432",
+        "CONN_MAX_AGE": 0,  # IMPORTANT for serverless
     }
 }
+
 
 
 # Password validation
