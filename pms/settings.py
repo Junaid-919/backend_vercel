@@ -30,6 +30,11 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     ".vercel.app"
+    "https://backend-vercel-1cqc7cnq8-shaik-junaids-projects-35758ac6.vercel.app",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://backend-vercel-1cqc7cnq8-shaik-junaids-projects-35758ac6.vercel.app",
 ]
 
 
@@ -144,6 +149,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",  # React development server
+    "https://backend-vercel-1cqc7cnq8-shaik-junaids-projects-35758ac6.vercel.app",
 ]
 
 REST_FRAMEWORK = {
