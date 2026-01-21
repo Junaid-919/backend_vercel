@@ -31,12 +31,11 @@ ALLOWED_HOSTS = [
     ".vercel.app"
 ]
 
-# Get frontend URL from environment variable (default to localhost for dev)
-FRONTEND_URL = os.environ.get("https://vercel-wpf2.vercel.app", "http://localhost:3000")
-
 CORS_ALLOWED_ORIGINS = [
-    FRONTEND_URL,
+    "https://vercel-wpf2.vercel.app",  # exact deployed frontend
+    "http://localhost:3000"
 ]
+
 
 # Application definition
 
