@@ -30,7 +30,6 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     ".vercel.app"
-    "https://backend-vercel-1cqc7cnq8-shaik-junaids-projects-35758ac6.vercel.app",
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -55,6 +54,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',   # 🔥 MUST BE FIRST
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -143,10 +143,6 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-# Allow all origins for development (not recommended for production)
-CORS_ALLOW_ALL_ORIGINS = True
-
-
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",  # React development server
     "https://backend-vercel-1cqc7cnq8-shaik-junaids-projects-35758ac6.vercel.app",
@@ -163,3 +159,4 @@ REST_FRAMEWORK = {
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+DEBUG = False
