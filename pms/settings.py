@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import os
+from corsheaders.defaults import default_headers
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,8 +31,11 @@ ALLOWED_HOSTS = [
     ".vercel.app"
 ]
 
+# Get frontend URL from environment variable (default to localhost for dev)
+FRONTEND_URL = os.environ.get("https://vercel-wpf2.vercel.app", "http://localhost:3000")
+
 CORS_ALLOWED_ORIGINS = [
-    "https://vercel-wpf2.vercel.app",
+    FRONTEND_URL,
 ]
 
 # Application definition
@@ -50,7 +55,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # MUST BE FIRST
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -59,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 
 
@@ -147,16 +153,8 @@ CSRF_TRUSTED_ORIGINS = [
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOW_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-    "dnt",
-    "origin",
-    "user-agent",
+CORS_ALLOW_HEADERS = list(default_headers) + [
     "x-csrftoken",
-    "x-requested-with",
 ]
 
 
