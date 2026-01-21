@@ -25,11 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-ceqg5snn)m&l9ww5-p2surc=ybw5*^8(2q$!*(_&coqk64w_!v"
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    ".vercel.app"
-]
+ALLOWED_HOSTS = ["*"]
 
 CORS_ALLOWED_ORIGINS = [
     "https://vercel-wpf2.vercel.app",
@@ -146,11 +142,14 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",  # React development server
-    "https://vercel-wpf2.vercel.app",
-    "https://*.vercel.app",
-]
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://localhost:3000",  # React development server
+#     "https://vercel-wpf2.vercel.app",
+#     "https://*.vercel.app",
+# ]
+
+CSRF_TRUSTED_ORIGINS = ["*"]
+
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
