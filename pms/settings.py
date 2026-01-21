@@ -32,9 +32,10 @@ ALLOWED_HOSTS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://vercel-wpf2.vercel.app"
-    "https://vercel-wpf2*" # exact deployed frontend
-    "http://localhost:3000"
+    "https://vercel-wpf2.vercel.app",
+    "https://vercel-wpf2*", # exact deployed frontend
+    "http://localhost:3000",
+    "https://*.vercel.app",
 ]
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
