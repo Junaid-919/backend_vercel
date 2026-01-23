@@ -166,4 +166,8 @@ REST_FRAMEWORK = {
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+<<<<<<< HEAD
 DEBUG = False
+=======
+DEBUG = False
+>>>>>>> 47c1e98 (Initial commit jan23)

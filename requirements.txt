@@ -5,4 +5,8 @@ djangorestframework-simplejwt==5.5.1
 psycopg2-binary==2.9.9
 python-dotenv==1.0.1
 gunicorn==21.2.0
+<<<<<<< HEAD
 whitenoise>=6.6.0
+=======
+whitenoise>=6.6.0
+>>>>>>> 47c1e98 (Initial commit jan23)

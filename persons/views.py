@@ -1,8 +1,13 @@
 # persons/views.py
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+<<<<<<< HEAD
 from persons.models import Person
 from persons.serializers import PersonSerializer
+=======
+from persons.models import Person, Location
+from persons.serializers import PersonSerializer, LocationSerializer
+>>>>>>> 47c1e98 (Initial commit jan23)
 
 
 
@@ -56,3 +61,61 @@ def get_person_withid(request, person_id):
 
     serializer = PersonSerializer(person)
     return Response(serializer.data)
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+# ========================================================
+
+
+@api_view(['GET'])
+def get_location_data(request):
+    persons = Location.objects.all()
+    serializer = LocationSerializer(persons, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def create_location_data(request):
+    serializer = LocationSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=201)
+    return Response(serializer.errors, status=400)
+
+@api_view(['PUT'])
+def update_location(request, location_id):
+    try:
+        person = Location.objects.get(id=location_id)
+    except Location.DoesNotExist:
+        return Response({"error": "Location not found"}, status=404)
+
+    serializer = LocationSerializer(person, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=400)
+
+@api_view(['DELETE'])
+def delete_location(request, location_id):
+    try:
+        person = Location.objects.get(id=location_id)
+    except Location.DoesNotExist:
+        return Response({"error": "Location not found"}, status=404)
+
+    person.delete()
+    return Response(status=204)
+
+@api_view(['GET'])
+def get_location_withid(request, location_id):
+    try:
+        person = Location.objects.get(id=location_id)
+    except Location.DoesNotExist:
+        return Response({"error": "Location not found"}, status=404)
+
+    serializer = LocationSerializer(person)
+    return Response(serializer.data)
+>>>>>>> 47c1e98 (Initial commit jan23)

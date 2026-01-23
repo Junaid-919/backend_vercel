@@ -6,3 +6,12 @@ class Person(models.Model):
     phone = models.TextField()
     bloodgroup = models.TextField()
     address = models.TextField()
+<<<<<<< HEAD
+=======
+
+
+class Location(models.Model):
+    latitude = models.TextField()
+    longitude = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+>>>>>>> 47c1e98 (Initial commit jan23)
