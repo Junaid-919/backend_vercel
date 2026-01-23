@@ -6,9 +6,4 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("persons.urls")),
     path("", health),
-
-<<<<<<< HEAD
 ]
-=======
-]
->>>>>>> 47c1e98 (Initial commit jan23)
