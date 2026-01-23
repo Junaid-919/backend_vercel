@@ -1,13 +1,10 @@
 # persons/views.py
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-<<<<<<< HEAD
 from persons.models import Person
 from persons.serializers import PersonSerializer
-=======
 from persons.models import Person, Location
 from persons.serializers import PersonSerializer, LocationSerializer
->>>>>>> 47c1e98 (Initial commit jan23)
 
 
 
@@ -61,13 +58,6 @@ def get_person_withid(request, person_id):
 
     serializer = PersonSerializer(person)
     return Response(serializer.data)
-<<<<<<< HEAD
-=======
-
-
-
-
-
 
 # ========================================================
 
@@ -118,4 +108,3 @@ def get_location_withid(request, location_id):
 
     serializer = LocationSerializer(person)
     return Response(serializer.data)
->>>>>>> 47c1e98 (Initial commit jan23)
