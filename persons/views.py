@@ -108,3 +108,101 @@ def get_location_withid(request, location_id):
 
     serializer = LocationSerializer(person)
     return Response(serializer.data)
+
+
+# ========================================================
+@api_view(['GET', 'POST'])
+def busstop_collection(request):
+    if request.method == 'GET':
+        qs = BusStop.objects.all()
+        serializer = BusStopSerializer(qs, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = BusStopSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                serializer.data,
+                status=201
+            )
+        return Response(serializer.errors, status=400)
+
+
+@api_view(['PUT', 'PATCH'])
+def busstop_detail(request, pk):
+    """
+    PUT/PATCH:  Update the bus stop identified by pk.
+    """
+    try:
+        busstop = BusStop.objects.get(pk=pk)
+    except BusStop.DoesNotExist:
+        return Response({'detail': 'Not found.'}, status=404)
+
+    if request.method in ['PUT', 'PATCH']:
+        serializer = BusStopSerializer(busstop, data=request.data, partial=(request.method == 'PATCH'))
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+
+# ------------------------------------------------------------------
+#  BusService
+# ------------------------------------------------------------------
+
+@api_view(['GET', 'POST'])
+def busservice_collection(request):
+    """
+    GET:   List all bus services.
+    POST:  Create a new bus service.
+    """
+    if request.method == 'GET':
+        qs = BusService.objects.select_related('busstop').all()
+        serializer = BusServiceSerializer(qs, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = BusServiceSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                serializer.data,
+                status=201
+            )
+        return Response(serializer.errors, status=400)
+
+
+@api_view(['PUT', 'PATCH'])
+# @csrf_exempt                     # ← Uncomment if you truly want to skip CSRF
+def busservice_detail(request, pk):
+    """
+    PUT/PATCH:  Update the bus service identified by pk.
+    The arrival_time & next_arrival_time are automatically set to a random
+    offset (0‑10 min) from now, with next_arrival_time always 5 min after that.
+    """
+    try:
+        busservice = BusService.objects.get(pk=pk)
+    except BusService.DoesNotExist:
+        return Response({'detail': 'Not found.'}, status=404)
+
+    if request.method in ['PUT', 'PATCH']:
+        # 1️⃣  Compute new times
+        now = timezone.now()
+        random_minute_offset = random.randint(0, 10)
+        new_arrival = now + timedelta(minutes=random_minute_offset)
+        new_next = new_arrival + timedelta(minutes=5)
+
+        # 2️⃣  Ensure those values are present in the payload
+        #       (they may already be sent by the client – we just override them)
+        data = request.data.copy()
+        data['arrival_time'] = new_arrival
+        data['next_arrival_time'] = new_next
+
+        # 3️⃣  Validate & save
+        serializer = BusServiceSerializer(
+            busservice, data=data, partial=(request.method == 'PATCH')
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
