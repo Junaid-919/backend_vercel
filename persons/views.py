@@ -12,16 +12,15 @@ from django.shortcuts import get_object_or_404
 
 @api_view(['GET'])
 def busstop_detail(request, bus_stop_number):
-    busstop = get_object_or_404(
-        BusStop,
-        bus_stop_number=bus_stop_number
-    )
-
-    services = BusService.objects.filter(busstop=busstop)
-
-    serializer = BusServiceSerializer(services, many=True)
-
-    return Response(serializer.data)
+    try:
+        try:
+            person = BusStop.objects.get(bus_stop_number=bus_stop_number)
+        except Person.DoesNotExist:
+            return Response({"error": "Person not found"}, status=404)
+        
+        services = BusService.objects.filter(busstop=person)
+        serializer = BusServiceSerializer(services, many=True)
+        return Response(serializer.data)
 
 
 @api_view(["GET"])
