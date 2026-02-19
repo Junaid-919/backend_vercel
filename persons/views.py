@@ -5,7 +5,20 @@ from persons.models import Person
 from persons.serializers import PersonSerializer, BusStopSerializer, BusServiceSerializer
 from persons.models import Person, Location, BusStop, BusService
 from persons.serializers import PersonSerializer, LocationSerializer
+from django.shortcuts import get_object_or_404
 
+
+
+
+@api_view(['GET'])
+def busstop_detail(request, bus_stop_number):
+    busstop = get_object_or_404(
+        BusStop,
+        bus_stop_number=bus_stop_number
+    )
+
+    serializer = BusStopSerializer(busstop)
+    return Response(serializer.data)
 
 
 @api_view(["GET"])
