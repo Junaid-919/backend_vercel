@@ -17,7 +17,10 @@ def busstop_detail(request, bus_stop_number):
         bus_stop_number=bus_stop_number
     )
 
-    serializer = BusStopSerializer(busstop)
+    services = BusService.objects.filter(busstop=busstop)
+
+    serializer = BusServiceSerializer(services, many=True)
+
     return Response(serializer.data)
 
 
