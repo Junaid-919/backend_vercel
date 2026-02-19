@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 
 
 @api_view(['GET'])
-def busstop_detail(request, bus_stop_number):
+def busstop_detail1(request, bus_stop_number):
     try:
         try:
             person = BusStop.objects.get(bus_stop_number=bus_stop_number)
