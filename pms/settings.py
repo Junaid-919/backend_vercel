@@ -15,6 +15,7 @@ ALLOWED_HOSTS = ["*"]
 
 CORS_ALLOWED_ORIGINS = [
     "https://vercel-wpf2.vercel.app",
+    "https://bus-beta-two.vercel.app",
 ]
 
 # Application definition
