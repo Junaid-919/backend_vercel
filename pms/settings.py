@@ -11,7 +11,11 @@ SECRET_KEY = "django-insecure-ceqg5snn)m&l9ww5-p2surc=ybw5*^8(2q$!*(_&coqk64w_!v
 
 ALLOWED_HOSTS = ["*"]
 
-CORS_ALLOWED_ORIGINS = ["*"]
+# CORS_ALLOWED_ORIGINS = ["*"]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://vercel-wpf2.vercel.app",
+]
 
 # Application definition
 
@@ -101,7 +105,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CSRF_TRUSTED_ORIGINS = ["https://*.vercel.app"]
 
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
