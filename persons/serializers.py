@@ -33,5 +33,5 @@ class BusServiceSerializer(serializers.ModelSerializer):
         """
         representation = super().to_representation(instance)
         # Replace `patient` ID with full serialized data
-        representation['busstop'] = PatientSerializer(instance.busstop).data
+        representation['busstop'] = BusStopSerializer(instance.busstop).data
         return representation
