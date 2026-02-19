@@ -180,14 +180,17 @@ def busstop_detail(request, pk):
 # 🔹 Get Bus Services by Bus Stop Number (GET only)
 @api_view(['GET'])
 def busstop_services_by_number(request, bus_stop_number):
-
+    print("busstop method is called", bus_stop_number)
     try:
         busstop = BusStop.objects.get(bus_stop_number=bus_stop_number)
+        print("busstop method is called line 186 ", bus_stop_number)
     except BusStop.DoesNotExist:
         return Response({"error": "Bus stop not found"}, status=404)
 
     services = BusService.objects.filter(busstop=busstop)
+    print("busstop method is called line 191 ", bus_stop_number)
     serializer = BusServiceSerializer(services, many=True)
+    print("busstop method is called line 192 ", serializer.data)
     return Response(serializer.data)
 
 
