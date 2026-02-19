@@ -2,7 +2,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from persons.models import Person
-from persons.serializers import PersonSerializer
+from persons.serializers import PersonSerializer, BusStopSerializer, BusServiceSerializer
 from persons.models import Person, Location
 from persons.serializers import PersonSerializer, LocationSerializer
 
