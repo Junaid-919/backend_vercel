@@ -13,25 +13,15 @@ class LocationSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class BusStopSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = BusStop
-        fields = "__all__"
-
-
 class BusServiceSerializer(serializers.ModelSerializer):
-    busstop = serializers.PrimaryKeyRelatedField(queryset=BusStop.objects.all())
 
     class Meta:
         model = BusService
         fields = "__all__"
 
-        
-    def to_representation(self, instance):
-        """
-        Customize representation to include detailed patient information.
-        """
-        representation = super().to_representation(instance)
-        # Replace `patient` ID with full serialized data
-        representation['busstop'] = BusStopSerializer(instance.busstop).data
-        return representation
+
+class BusStopSerializer(serializers.ModelSerializer):
+    busservice = BusServiceSerializer(many=True, read_only=True)
+    class Meta:
+        model = BusStop
+        fields = "__all__"
