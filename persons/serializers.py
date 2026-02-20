@@ -21,7 +21,7 @@ class BusServiceSerializer(serializers.ModelSerializer):
 
 
 class BusStopSerializer(serializers.ModelSerializer):
-    busservice = BusServiceSerializer(many=True, read_only=True)
+    bussservice = BusServiceSerializer(many=True, read_only=True)
     class Meta:
         model = BusStop
         fields = "__all__"
