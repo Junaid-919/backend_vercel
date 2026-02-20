@@ -187,9 +187,7 @@ def busstop_services_by_number(request, bus_stop_number):
     except BusStop.DoesNotExist:
         return Response({"error": "Bus stop not found"}, status=404)
 
-    services = BusService.objects.filter(busstop=busstop)
-    print("busstop method is called line 191 ", bus_stop_number)
-    serializer = BusServiceSerializer(services, many=True)
+    serializer = BusStopSerializer(busstop)
     print("busstop method is called line 192 ", serializer.data)
     return Response(serializer.data)
 
