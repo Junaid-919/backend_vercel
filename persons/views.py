@@ -183,7 +183,7 @@ def busstop_services_by_number(request, bus_stop_number):
     print("busstop method is called", bus_stop_number)
     try:
         # busstop = BusStop.objects.get(bus_stop_number=bus_stop_number)
-        busstop = BusStop.objects.prefetch_related('busservice').get(bus_stop_number=bus_stop_number)
+        busstop = BusStop.objects.prefetch_related('bussservice').get(bus_stop_number=bus_stop_number)
         print("busstop method is called line 186 ", bus_stop_number)
     except BusStop.DoesNotExist:
         return Response({"error": "Bus stop not found"}, status=404)
