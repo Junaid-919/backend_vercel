@@ -4,15 +4,16 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from datetime import timedelta
+from datetime import timedelta, datetime
 import random
 
-from persons.models import Person, Location, BusStop, BusService
+from persons.models import Person, Location, BusStop, BusService, Bus
 from persons.serializers import (
     PersonSerializer,
     LocationSerializer,
     BusStopSerializer,
     BusServiceSerializer,
+    BusSerializer,
 )
 
 # ========================================================
@@ -242,3 +243,50 @@ def busservice_detail(request, pk):
         return Response(serializer.data)
 
     return Response(serializer.errors, status=400)
+
+#  ==============================================================
+
+@api_view(['POST'])
+def post_bus_data(request):
+    serializer = BusSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=201)
+    return Response(serializer.errors, status=400)
+
+
+@api_view(['GET'])
+def get_bus_data(request):
+    qs = Bus.objects.all()
+    serializer = BusServiceSerializer(qs, many=True)
+    return Response(serializer.data)
+
+
+
+
+
+@api_view(['GET'])
+def get_arr(request, pk):
+    current_time = datetime.now().time()
+
+    # Get next 2 schedules
+    schedules = list(
+        Bus.objects
+        .filter(bus_stopno=pk, arrival_time__gt=current_time)
+        .order_by('arrival_time')[:2]
+    )
+
+    if not schedules:
+        return Response({"message": "No upcoming times found"})
+
+    first = schedules[0]
+    second = schedules[1] if len(schedules) > 1 else None
+
+    data = [{
+        "bus_stopno": first.bus_stopno,
+        "bus_serviceno": first.bus_serviceno,
+        "arrival_time": first.arrival_time.strftime("%H:%M:%S"),
+        "next_time": second.arrival_time.strftime("%H:%M:%S") if second else None
+    }]
+
+    return Response(data)

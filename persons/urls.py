@@ -21,6 +21,8 @@ urlpatterns = [
     # BusService
     path('busservices/', views.busservice_collection, name='busservice-list-create'),
     path('busservices/<int:pk>/', views.busservice_detail, name='busservice-detail'),
-    path('busstops/number/<str:bus_stop_number>/', 
-     views.busstop_services_by_number),
+    path('busstops/number/<str:bus_stop_number>/', views.busstop_services_by_number),
+    path('busstops/arr/<str:pk>/', views.get_arr),
+
+
 ]

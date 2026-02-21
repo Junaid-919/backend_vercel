@@ -23,3 +23,9 @@ class BusService(models.Model):
     service_number = models.TextField()
     arrival_time = models.TextField()
     next_arrival_time = models.TextField()
+
+
+class Bus(models.Model):
+    bus_stopno = models.TextField()
+    bus_serviceno = models.TextField()
+    arrival_time = models.TimeField()
