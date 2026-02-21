@@ -431,7 +431,7 @@ class RegisterScheduleView(APIView):
                     partition_by=[F('bus_serviceno')],
                     order_by=F('arrival_time').asc()
                 ),
-                next_schedule=Window(
+                next_arrival=Window(
                     expression=Lead('arrival_time'),
                     partition_by=[F('bus_serviceno')],
                     order_by=F('arrival_time').asc()
