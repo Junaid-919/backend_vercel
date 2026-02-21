@@ -278,13 +278,13 @@ def get_arr(request, pk):
     # Get next 2 schedules
     schedules = list(
         Bus.objects
-        .filter(bus_stopno=pk, arrival_time__gt=current_time)
+        .filter(busstop_id=pk, arrival_time__gt=current_time)
         .order_by('arrival_time')[:2]
     )
 
     schedules1 = list(
         Bus.objects
-        .filter(bus_stopno=pk, arrival_time__gt=current_time)
+        .filter(busstop_id=pk, arrival_time__gt=current_time)
         .order_by('arrival_time').values()[:2]
     )
 
@@ -300,7 +300,7 @@ def get_arr(request, pk):
     print("second = ", second)
 
     data = [{
-        "bus_stopno": first.bus_stopno,
+        "busstop": first.busstop.id,
         "bus_serviceno": first.bus_serviceno,
         "arrival_time": first.arrival_time.strftime("%H:%M:%S"),
         "next_time": second.arrival_time.strftime("%H:%M:%S") if second else None
@@ -324,7 +324,7 @@ class ScheduleByRegisterView(APIView):
 
         queryset1 = (
             Bus.objects
-            .filter(bus_stopno=pk, arrival_time__gt=current_time)
+            .filter(busstop_id=pk, arrival_time__gt=current_time)
             .annotate(
                 row_number=Window(
                     expression=RowNumber(),
@@ -339,7 +339,7 @@ class ScheduleByRegisterView(APIView):
             )
             .filter(row_number=1)  # Only first record per subregisterno
             .values(
-                'bus_stopno',
+                'busstop',
                 'bus_serviceno',
                 'arrival_time',
                 'next_arrival'
@@ -352,7 +352,7 @@ class ScheduleByRegisterView(APIView):
 
         queryset = (
             Bus.objects
-            .filter(bus_stopno=pk, arrival_time__gt=current_time)
+            .filter(busstop_id=pk, arrival_time__gt=current_time)
             .annotate(
                 row_number=Window(
                     expression=RowNumber(),
@@ -367,7 +367,7 @@ class ScheduleByRegisterView(APIView):
             )
             .filter(row_number=1)  # Only first record per subregisterno
             .values(
-                'bus_stopno',
+                'busstop',
                 'bus_serviceno',
                 'arrival_time',
                 'next_arrival'
@@ -394,7 +394,7 @@ class ScheduleByRegisterView(APIView):
                 next_diff_minutes = int((next_dt - current_datetime).total_seconds() / 60)
 
             result.append({
-                "bus_stopno": obj["bus_stopno"],
+                "busstop": obj["busstop"],
                 "bus_serviceno": obj["bus_serviceno"],
                 "arrival_time": diff_minutes,
                 "next_arrival": next_diff_minutes
