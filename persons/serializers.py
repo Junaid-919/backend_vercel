@@ -27,6 +27,14 @@ class BusSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+
+class ScheduleTwoTimesSerializer(serializers.Serializer):
+    bus_stopno = serializers.IntegerField()
+    bus_serviceno = serializers.IntegerField()
+    arrival_time = serializers.IntegerField()
+    next_arrival = serializers.IntegerField(allow_null=True)
+
+
 class BusStopSerializer(serializers.ModelSerializer):
     bussservice = BusServiceSerializer(many=True, read_only=True)
     class Meta:

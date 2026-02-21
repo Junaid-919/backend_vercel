@@ -4,8 +4,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, date
 import random
+
+from django.db.models import Window, F
+from django.db.models.functions import RowNumber, Lead
 
 from persons.models import Person, Location, BusStop, BusService, Bus
 from persons.serializers import (
@@ -15,6 +18,7 @@ from persons.serializers import (
     BusServiceSerializer,
     BusSerializer,
 )
+from rest_framework.views import APIView
 
 # ========================================================
 # Health Check
@@ -269,6 +273,8 @@ def get_bus_data(request):
 def get_arr(request, pk):
     current_time = datetime.now().time()
 
+    print("curect time = ", current_time)
+
     # Get next 2 schedules
     schedules = list(
         Bus.objects
@@ -276,11 +282,22 @@ def get_arr(request, pk):
         .order_by('arrival_time')[:2]
     )
 
+    schedules1 = list(
+        Bus.objects
+        .filter(bus_stopno=pk, arrival_time__gt=current_time)
+        .order_by('arrival_time').values()[:2]
+    )
+
+    print("shedules = ", schedules1)
+
     if not schedules:
         return Response({"message": "No upcoming times found"})
 
     first = schedules[0]
     second = schedules[1] if len(schedules) > 1 else None
+
+    print("first = ", first)
+    print("second = ", second)
 
     data = [{
         "bus_stopno": first.bus_stopno,
@@ -290,3 +307,98 @@ def get_arr(request, pk):
     }]
 
     return Response(data)
+
+
+
+from .serializers import ScheduleTwoTimesSerializer
+from rest_framework.views import APIView
+
+
+class ScheduleByRegisterView(APIView):
+
+    def get(self, request, pk):
+        current_time = datetime.now().time()
+        current_datetime = timezone.localtime()
+        current_time = current_datetime.time()
+
+
+        queryset1 = (
+            Bus.objects
+            .filter(bus_stopno=pk, arrival_time__gt=current_time)
+            .annotate(
+                row_number=Window(
+                    expression=RowNumber(),
+                    partition_by=[F('bus_serviceno')],
+                    order_by=F('arrival_time').asc()
+                ),
+                next_arrival=Window(
+                    expression=Lead('arrival_time'),
+                    partition_by=[F('bus_serviceno')],
+                    order_by=F('arrival_time').asc()
+                )
+            )
+            .filter(row_number=1)  # Only first record per subregisterno
+            .values(
+                'bus_stopno',
+                'bus_serviceno',
+                'arrival_time',
+                'next_arrival'
+            )
+            .order_by('bus_serviceno').values()
+        )
+
+        print("current time = ", current_time)
+        print("objects = ", queryset1)
+
+        queryset = (
+            Bus.objects
+            .filter(bus_stopno=pk, arrival_time__gt=current_time)
+            .annotate(
+                row_number=Window(
+                    expression=RowNumber(),
+                    partition_by=[F('bus_serviceno')],
+                    order_by=F('arrival_time').asc()
+                ),
+                next_arrival=Window(
+                    expression=Lead('arrival_time'),
+                    partition_by=[F('bus_serviceno')],
+                    order_by=F('arrival_time').asc()
+                )
+            )
+            .filter(row_number=1)  # Only first record per subregisterno
+            .values(
+                'bus_stopno',
+                'bus_serviceno',
+                'arrival_time',
+                'next_arrival'
+            )
+            .order_by('bus_serviceno')
+        )
+
+
+        result = []
+
+        for obj in queryset:
+
+            # Convert schedule_time to datetime (today)
+            schedule_dt = datetime.combine(date.today(), obj['arrival_time'])
+            schedule_dt = timezone.make_aware(schedule_dt)
+
+            # Calculate difference in minutes
+            diff_minutes = int((schedule_dt - current_datetime).total_seconds() / 60)
+
+            next_diff_minutes = None
+            if obj['next_arrival']:
+                next_dt = datetime.combine(date.today(), obj['next_arrival'])
+                next_dt = timezone.make_aware(next_dt)
+                next_diff_minutes = int((next_dt - current_datetime).total_seconds() / 60)
+
+            result.append({
+                "bus_stopno": obj["bus_stopno"],
+                "bus_serviceno": obj["bus_serviceno"],
+                "arrival_time": diff_minutes,
+                "next_arrival": next_diff_minutes
+            })
+
+        serializer = ScheduleTwoTimesSerializer(result, many=True)
+        return Response(serializer.data)
