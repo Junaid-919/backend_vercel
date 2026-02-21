@@ -20,11 +20,11 @@ class BusServiceSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class BusSerializer(serializers.ModelSerializer):
+# class BusSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = Bus
-        fields = "__all__"
+#     class Meta:
+#         model = Bus
+#         fields = "__all__"
 
 
 
@@ -40,3 +40,16 @@ class BusStopSerializer(serializers.ModelSerializer):
     class Meta:
         model = BusStop
         fields = "__all__"
+
+
+
+class BusSerializer(serializers.Serializer):
+    bus_serviceno = serializers.IntegerField()
+    arrival_time = serializers.TimeField()
+    next_arrival = serializers.TimeField(allow_null=True)
+
+
+class BusStopResponseSerializer(serializers.Serializer):
+    bus_stop_number = serializers.IntegerField()
+    bus_stop_name = serializers.CharField()
+    bus_details = BusSerializer(many=True)

@@ -402,3 +402,54 @@ class ScheduleByRegisterView(APIView):
 
         serializer = ScheduleTwoTimesSerializer(result, many=True)
         return Response(serializer.data)
+
+
+
+class RegisterScheduleView(APIView):
+
+    def get(self, request, pk):
+
+        # Get register object
+        try:
+            busstop = BusStop.objects.get(bus_stop_number=pk)
+        except BusStop.DoesNotExist:
+            return Response({"error": "BusStop not found"}, status=404)
+
+        # Get current time (IST if configured)
+        current_time = timezone.localtime().time()
+
+        # Get next schedule + next_schedule per subregisterno
+        schedules = (
+            Bus.objects
+            .filter(
+                busstop=busstop,
+                arrival_time__gt=current_time
+            )
+            .annotate(
+                row_number=Window(
+                    expression=RowNumber(),
+                    partition_by=[F('bus_serviceno')],
+                    order_by=F('arrival_time').asc()
+                ),
+                next_schedule=Window(
+                    expression=Lead('arrival_time'),
+                    partition_by=[F('bus_serviceno')],
+                    order_by=F('arrival_time').asc()
+                )
+            )
+            .filter(row_number=1)
+            .values(
+                'bus_serviceno',
+                'arrival_time',
+                'next_arrival'
+            )
+            .order_by('bus_serviceno')
+        )
+
+        response_data = {
+            "bus_stop_number": busstop.bus_stop_number,
+            "bus_stop_name": busstop.bus_stop_name,
+            "bus_details": list(schedules)
+        }
+
+        return Response(response_data)

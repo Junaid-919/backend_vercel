@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views  # import the module itself
 from .views import ScheduleByRegisterView
+from .views import RegisterScheduleView
 
 
 urlpatterns = [
@@ -26,6 +27,6 @@ urlpatterns = [
     path('busstops/number/<str:bus_stop_number>/', views.busstop_services_by_number),
     path('busstops/arr/<str:pk>/', views.get_arr),
     path('busstops/arr1/<str:pk>/', ScheduleByRegisterView.as_view()),
-
+    path("register/<int:pk>/", RegisterScheduleView.as_view()),
 
 ]

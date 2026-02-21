@@ -26,6 +26,6 @@ class BusService(models.Model):
 
 
 class Bus(models.Model):
-    bus_stopno = models.TextField()
+    busstop = models.ForeignKey(BusStop, on_delete=models.CASCADE, null=True, blank=True)
     bus_serviceno = models.TextField()
     arrival_time = models.TimeField()
