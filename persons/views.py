@@ -447,6 +447,7 @@ class RegisterScheduleView(APIView):
         )
 
         response_data = {
+            "current_time": datetime.now().time()
             "bus_stop_number": busstop.bus_stop_number,
             "bus_stop_name": busstop.bus_stop_name,
             "bus_details": list(schedules)

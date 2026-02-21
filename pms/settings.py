@@ -97,7 +97,7 @@ LANGUAGE_CODE = "en-us"
 
 USE_I18N = True
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Kolkata"
 
 
 USE_TZ = True
@@ -132,8 +132,6 @@ REST_FRAMEWORK = {
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 DEBUG = False
-<<<<<<< Updated upstream
-=======
 
 
 
@@ -295,4 +293,3 @@ DEBUG = False
 
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
->>>>>>> Stashed changes
