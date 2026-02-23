@@ -97,8 +97,7 @@ LANGUAGE_CODE = "en-us"
 
 USE_I18N = True
 
-TIME_ZONE = "Asia/Kolkata"
-
+TIME_ZONE = "Asia/Singapore"
 
 USE_TZ = True
 
