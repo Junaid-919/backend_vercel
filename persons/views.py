@@ -321,7 +321,6 @@ class ScheduleByRegisterView(APIView):
         current_datetime = timezone.localtime()
         current_time = current_datetime.time()
 
-
         queryset1 = (
             Bus.objects
             .filter(busstop_id=pk, arrival_time__gt=current_time)
@@ -409,6 +408,9 @@ class RegisterScheduleView(APIView):
 
     def get(self, request, pk):
 
+        a = BusStop.objects.all().values()
+
+        print("all busstops = ", a)
         # Get register object
         try:
             busstop = BusStop.objects.get(bus_stop_number=pk)
