@@ -409,7 +409,6 @@ class RegisterScheduleView(APIView):
     def get(self, request, pk):
 
         a = BusStop.objects.all().values()
-s
         print("all busstops = ", a)
         # Get register object
         try:
